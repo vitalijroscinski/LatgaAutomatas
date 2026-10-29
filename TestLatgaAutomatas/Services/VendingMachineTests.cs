@@ -1,5 +1,5 @@
-﻿using LatgaAutomatas.Models;
-using LatgaAutomatas.Services;
+﻿using LatgaAutomatasLibrary.Models;
+using LatgaAutomatasLibrary.Services;
 
 namespace TestLatgaAutomatas.Services
 {

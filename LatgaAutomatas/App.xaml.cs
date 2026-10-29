@@ -1,5 +1,5 @@
-﻿using LatgaAutomatas.Services;
-using LatgaAutomatas.Services.Interfaces;
+﻿using LatgaAutomatasLibrary.Services;
+using LatgaAutomatasLibrary.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
