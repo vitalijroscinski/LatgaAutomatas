@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="LatgaAutomatas/LatgaAutomatas.csproj" />
+  <Project Path="TestLatgaAutomatas/TestLatgaAutomatas.csproj" Id="8f9fd61b-b2e5-4963-b0bd-971268a3df5e" />
+</Solution>

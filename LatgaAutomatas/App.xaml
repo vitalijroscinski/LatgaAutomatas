@@ -1,0 +1,7 @@
+﻿<Application x:Class="LatgaAutomatas.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:LatgaAutomatas">
+    <Application.Resources>
+    </Application.Resources>
+</Application>
