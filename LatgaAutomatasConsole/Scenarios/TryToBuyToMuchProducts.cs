@@ -2,6 +2,7 @@
 using LatgaAutomatasLibrary.Models;
 using LatgaAutomatasLibrary.Services;
 using LatgaAutomatasLibrary.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,13 +13,17 @@ namespace LatgaAutomatasConsole.Scenarios
     {
         private readonly IVendingMachine _vendingMachine;
         private readonly IBillService _billService;
+        private readonly ILogger<TryToBuyToMuchProducts> _logger;
 
         public TryToBuyToMuchProducts(IVendingMachine vendingMachine,
-            IBillService billService)
+            IBillService billService,
+            ILogger<TryToBuyToMuchProducts> logger)
         {
             _vendingMachine = vendingMachine;
             _billService = billService;
+            _logger = logger;
         }
+
         public void Run()
         {
             //define bills
@@ -43,28 +48,28 @@ namespace LatgaAutomatasConsole.Scenarios
             Dictionary<Product, int> customerBag = new();
             customerBag.Add(product1, 2);
 
-            Console.WriteLine("Customer bag:");
-            customerBag.ToList().ForEach(b => Console.WriteLine($"Product {b.Key.Name}, price {b.Key.Price}, amount {b.Value}"));
+            _logger.LogInformation("Customer bag:");
+            customerBag.ToList().ForEach(b => _logger.LogInformation("Product {Name}, price {Price}, amount {Amount}", b.Key.Name, b.Key.Price, b.Value));
 
             //define customer cash
             Dictionary<Bill, int> customerCash = new();
             customerCash.Add(_billService.ExchangeToBill(0.5m), 1);
 
-            Console.WriteLine("Customer cash:");
-            customerCash.ToList().ForEach(b => Console.WriteLine($"Name {b.Key.Name}, nominal {b.Key.Nominal}, amount {b.Value}"));
+            _logger.LogInformation("Customer cash:");
+            customerCash.ToList().ForEach(b => _logger.LogInformation("Name {Name}, nominal {Nominal}, amount {Amount}", b.Key.Name, b.Key.Nominal, b.Value));
 
             //try to buy
             var rest = _vendingMachine.Sell(customerBag, customerCash);
 
             if (!rest.Success)
             {
-                Console.WriteLine("Payment was unsuccessful.");
-                Console.WriteLine(rest.ErrorMessage);
+                _logger.LogError("Payment was unsuccessful.");
+                _logger.LogError(rest.ErrorMessage);
                 return;
             }
 
-            Console.WriteLine("Rest:");
-            rest.Rest.ToList().ForEach(r => Console.WriteLine($"Name {r.Key.Name}, nominal {r.Key.Nominal}, amount {r.Value}"));
+            _logger.LogInformation("Rest:");
+            rest.Rest.ToList().ForEach(r => _logger.LogInformation("Name {Name}, nominal {Nominal}, amount {Amount}", r.Key.Name, r.Key.Nominal, r.Value));
         }
     }
 }

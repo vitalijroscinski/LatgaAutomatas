@@ -2,6 +2,7 @@
 using LatgaAutomatasLibrary.Models;
 using LatgaAutomatasLibrary.Services;
 using LatgaAutomatasLibrary.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,12 +13,15 @@ namespace LatgaAutomatasConsole.Scenarios
     {
         private readonly IVendingMachine _vendingMachine;
         private readonly IBillService _billService;
+        private readonly ILogger<PayAndGetRest> _logger;
 
         public PayAndGetRest(IVendingMachine vendingMachine,
-            IBillService billService)
+            IBillService billService,
+            ILogger<PayAndGetRest> logger)
         {
             _vendingMachine = vendingMachine;
             _billService = billService;
+            _logger = logger;
         }
         public void Run()
         {
@@ -46,14 +50,14 @@ namespace LatgaAutomatasConsole.Scenarios
             customerBag.Add(product1, 1);
             customerBag.Add(product2, 1);
 
-            Console.WriteLine("Customer bag:");
+            _logger.LogInformation("Customer bag:");
             customerBag.ToList().ForEach(b => Console.WriteLine($"Product {b.Key.Name}, price {b.Key.Price}, amount {b.Value}"));
 
             //define customer cash
             Dictionary<Bill, int> customerCash = new();
             customerCash.Add(_billService.ExchangeToBill(0.5m), 1);
 
-            Console.WriteLine("Customer cash:");
+            _logger.LogInformation("Customer cash:");
             customerCash.ToList().ForEach(b => Console.WriteLine($"Name {b.Key.Name}, nominal {b.Key.Nominal}, amount {b.Value}"));
 
             //try to buy
@@ -61,12 +65,12 @@ namespace LatgaAutomatasConsole.Scenarios
 
             if (!rest.Success)
             {
-                Console.WriteLine("Payment was unsuccessful.");
-                Console.WriteLine(rest.ErrorMessage);
+                _logger.LogError("Payment was unsuccessful.");
+                _logger.LogError(rest.ErrorMessage);
                 return;
             }
 
-            Console.WriteLine("Rest:");
+            _logger.LogInformation("Rest:");
             rest.Rest.ToList().ForEach(r => Console.WriteLine($"Name {r.Key.Name}, nominal {r.Key.Nominal}, amount {r.Value}"));
         }
     }
