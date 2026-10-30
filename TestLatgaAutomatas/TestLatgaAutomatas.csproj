@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LatgaAutomatas\LatgaAutomatas.csproj" />
+    <ProjectReference Include="..\LatgaAutomatasLibrary\LatgaAutomatasLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

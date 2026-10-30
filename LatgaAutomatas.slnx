@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="LatgaAutomatas/LatgaAutomatas.csproj" />
+  <Project Path="LatgaAutomatasConsole/LatgaAutomatasConsole.csproj" Id="e3f4d8f8-9cf3-4c56-a8b5-6308d0a451aa" />
   <Project Path="LatgaAutomatasLibrary/LatgaAutomatasLibrary.csproj" Id="5654b1cf-6647-4f8a-81b4-8945995a8198" />
   <Project Path="TestLatgaAutomatas/TestLatgaAutomatas.csproj" Id="8f9fd61b-b2e5-4963-b0bd-971268a3df5e" />
 </Solution>

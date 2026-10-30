@@ -1,0 +1,87 @@
+﻿<Window x:Class="LatgaAutomatas.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LatgaAutomatas"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <DataGrid x:Name="BillsGrid"
+                  Grid.Column="0"
+                  ItemsSource="{Binding BillAmounts}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  HeadersVisibility="Column"
+                  Margin="0,0,10,10"
+                  IsReadOnly="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name"
+                                    Binding="{Binding Bill.Name, Mode=OneWay}"
+                                    Width="*"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Header="Nominal"
+                                    Binding="{Binding Bill.Nominal, StringFormat={}{0:C}, Mode=OneWay}"
+                                    Width="*"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Header="Amount"
+                                    Binding="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid x:Name="ProductsGrid"
+                  Grid.Column="1"
+                  ItemsSource="{Binding ProductAmounts}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  HeadersVisibility="Column"
+                  Margin="10,0,0,10"
+                  IsReadOnly="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name"
+                                    Binding="{Binding Product.Name, Mode=OneWay}"
+                                    Width="*"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Header="Price"
+                                    Binding="{Binding Product.Price, StringFormat={}{0:C}, Mode=OneWay}"
+                                    Width="*"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Header="Amount"
+                                    Binding="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button x:Name="FeedMachineButton"
+                Grid.Row="1"
+                Grid.ColumnSpan="1"
+                Content="Feed machine"
+                Width="120"
+                Height="40"
+                HorizontalAlignment="Center"
+                Click="FeedMachine" />
+        
+<Button x:Name="BuyButton"
+        Grid.Row="1"
+        Grid.Column="2"
+        Grid.ColumnSpan="1"
+        Content="Buy products"
+        Width="120"
+        Height="40"
+        HorizontalAlignment="Center"
+        Click="BuyProducts" />
+    </Grid>
+</Window>

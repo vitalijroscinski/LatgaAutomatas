@@ -30,9 +30,9 @@ namespace LatgaAutomatasLibrary.Services
         public bool AddBill(Bill bill, int amount) => AddItem(_machineBills, bill, amount);
         public bool AddProduct(Product product, int amount) => AddItem(_machineProducts, product, amount);
 
-        public SellOperation Sell(Dictionary<Product, int> productAmounts, Dictionary<Bill, int> payment)
+        public SellOperation Sell(Dictionary<Product, int> orderedProductAmounts, Dictionary<Bill, int> payment)
         {
-            var productsSummaryPrice = productAmounts.Sum(x => x.Key.Price * x.Value);
+            var productsSummaryPrice = orderedProductAmounts.Sum(x => x.Key.Price * x.Value);
             var paymentCash = payment.Sum(x => x.Key.Nominal * x.Value);
 
             if (paymentCash < productsSummaryPrice)
@@ -44,13 +44,23 @@ namespace LatgaAutomatasLibrary.Services
                 };
             }
 
-            var missingProducts = productAmounts.Select(p => p.Key).Except(_machineProducts.Keys);
+            var missingProducts = orderedProductAmounts.Select(p => p.Key).Except(_machineProducts.Keys);
             if (missingProducts.Any())
             {
                 return new SellOperation
                 {
                     Success = false,
                     ErrorMessage = "Some products are missing: " + string.Join(", ", missingProducts.Select(p => p.Name)) + "."
+                };
+            }
+
+            var missingAmounts = orderedProductAmounts.Where(a => _machineProducts[a.Key] < a.Value);
+            if (missingAmounts.Any())
+            {
+                return new SellOperation
+                {
+                    Success = false,
+                    ErrorMessage = "Not sufficent amount of this products: " + string.Join(", ", missingAmounts.Select(a => a.Key.Name))
                 };
             }
 

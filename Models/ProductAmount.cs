@@ -1,0 +1,45 @@
+﻿using LatgaAutomatasLibrary.Models;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+namespace LatgaAutomatas.Models
+{
+    public class ProductAmount : INotifyPropertyChanged
+    {
+        private Product _product = null!;
+        private int _amount;
+
+        public required Product Product
+        {
+            get => _product;
+            set
+            {
+                if (_product == value)
+                    return;
+
+                _product = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int Amount
+        {
+            get => _amount;
+            set
+            {
+                if (_amount == value)
+                    return;
+
+                _amount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+}

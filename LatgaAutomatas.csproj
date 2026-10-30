@@ -9,14 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\**" />
     <Compile Remove="Services\**" />
-    <EmbeddedResource Remove="Models\**" />
     <EmbeddedResource Remove="Services\**" />
-    <None Remove="Models\**" />
     <None Remove="Services\**" />
-    <Page Remove="Models\**" />
     <Page Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Services\VendingMachine.cs" />
   </ItemGroup>
 
    <ItemGroup> 
@@ -25,7 +25,7 @@
    </ItemGroup>
 
    <ItemGroup>
-     <ProjectReference Include="..\LatgaAutomatasLibrary\LatgaAutomatasLibrary.csproj" />
+     <ProjectReference Include=".\LatgaAutomatasLibrary\LatgaAutomatasLibrary.csproj" />
    </ItemGroup> 
 
 </Project>
