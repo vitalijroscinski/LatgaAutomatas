@@ -6,6 +6,8 @@ namespace LatgaAutomatasLibrary.Services.Interfaces
     {
         bool AddBill(Bill bill, int amount);
         bool AddProduct(Product product, int amount);
+        void ClearBill();
+        void ClearProducts();
         SellOperation Sell(Dictionary<Product, int> products, Dictionary<Bill, int> payment);
     }
 }
