@@ -8,6 +8,8 @@ namespace LatgaAutomatasLibrary.Services.Interfaces
     public interface IBillService
     {
         void DefineBill(decimal denomination);
+        
+        void ClearBills();
 
         Bill ExchangeToBill(decimal denomination);
 

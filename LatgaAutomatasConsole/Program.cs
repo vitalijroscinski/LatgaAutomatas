@@ -18,15 +18,15 @@ namespace LatgaAutomatasConsole
             builder.Logging.AddConsole();
 
             // Register services
-            builder.Services.AddSingleton<IVendingMachine, VendingMachineService>();
-            builder.Services.AddSingleton<IPaymentService, PaymentService>();
-            builder.Services.AddSingleton<IBillService, BillService>();
+            builder.Services.AddScoped<IVendingMachine, VendingMachineService>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
+            builder.Services.AddScoped<IBillService, BillService>();
 
             //run scenarios
-            //builder.Services.AddSingleton<IRunScenario, PayAndGetRest>();
-            //builder.Services.AddSingleton<IRunScenario, TryToBuyNonExistingProduct>();
-            //builder.Services.AddSingleton<IRunScenario, TryToBuyToMuchProducts>();
-            builder.Services.AddSingleton<IRunScenario, CustomScenario>();
+            //builder.Services.AddScoped<IRunScenario, PayAndGetRest>();
+            //builder.Services.AddScoped<IRunScenario, TryToBuyNonExistingProduct>();
+            //builder.Services.AddScoped<IRunScenario, TryToBuyToMuchProducts>();
+            builder.Services.AddScoped<IRunScenario, CustomScenario>();
 
             // Build Host
             using var host = builder.Build();
@@ -37,10 +37,11 @@ namespace LatgaAutomatasConsole
             try
             {
                 // Resolve main application service
-                var runScenario = host.Services
-                    .GetRequiredService<IRunScenario>();
+                var runScenarios = host.Services
+                    .GetRequiredService<IEnumerable<IRunScenario>>();
 
-                runScenario.Run();
+                foreach(var runScenario in runScenarios)
+                    runScenario.Run();
             }
             catch (Exception ex)
             {

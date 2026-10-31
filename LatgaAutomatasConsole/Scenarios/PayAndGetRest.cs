@@ -26,6 +26,7 @@ namespace LatgaAutomatasConsole.Scenarios
         public void Run()
         {
             //define bills
+            _billService.ClearBills();
             _billService.DefineBill(0.1m);
             _billService.DefineBill(0.2m);
             _billService.DefineBill(0.5m);

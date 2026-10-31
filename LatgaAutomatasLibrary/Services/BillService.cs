@@ -28,5 +28,7 @@ namespace LatgaAutomatasLibrary.Services
 
             return bill;
         }
+
+        public void ClearBills() => _bills.Clear();
     }
 }
