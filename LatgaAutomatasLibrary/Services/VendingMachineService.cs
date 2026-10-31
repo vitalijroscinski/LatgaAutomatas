@@ -1,5 +1,6 @@
 ﻿using LatgaAutomatasLibrary.Models;
 using LatgaAutomatasLibrary.Services.Interfaces;
+using System.Dynamic;
 
 namespace LatgaAutomatasLibrary.Services
 {
@@ -71,36 +72,60 @@ namespace LatgaAutomatasLibrary.Services
                 };
             }
 
-            //start payment process
-            decimal rest = paymentCash - productsSummaryPrice;
-            //increase machine cash amount because of payment
-            foreach (var bill in payment)
-            {
-                if (_machineBills.ContainsKey(bill.Key))
-                    _machineBills[bill.Key] += bill.Value;
-                else
-                    _machineBills.Add(bill.Key, bill.Value);
-            }
-            var restOperation = _paymentService.PayTheRest(_machineBills, rest);
 
-            if (!restOperation.Success)
+            var machineBillsCopy = new Dictionary<Bill, int>(_machineBills);
+            var machineProductsCopy = new Dictionary<Product, int>(_machineProducts);
+
+            try
             {
-                //return customer bills
+                //start payment process
+                decimal rest = paymentCash - productsSummaryPrice;
+                //increase machine cash amount because of payment
                 foreach (var bill in payment)
+                {
+                    if (_machineBills.ContainsKey(bill.Key))
+                        _machineBills[bill.Key] += bill.Value;
+                    else
+                        _machineBills.Add(bill.Key, bill.Value);
+                }
+                var restOperation = _paymentService.PayTheRest(_machineBills, rest);
+
+                if (!restOperation.Success)
+                {
+                    //return customer bills
+                    foreach (var bill in payment)
+                        _machineBills[bill.Key] -= bill.Value;
+
+                    return restOperation;
+                }
+
+                //release machine products
+                foreach (var orderedProductAmount in orderedProductAmounts)
+                    _machineProducts[orderedProductAmount.Key] -= orderedProductAmount.Value;
+
+                //release rest
+                foreach (var bill in restOperation.Rest)
                     _machineBills[bill.Key] -= bill.Value;
 
                 return restOperation;
             }
+            catch
+            {
+                //reverse machine state
+                _machineBills.Clear();
+                foreach (var copyItem in machineBillsCopy)
+                    _machineBills.Add(copyItem.Key, copyItem.Value);
 
-            //release machine products
-            foreach (var orderedProductAmount in orderedProductAmounts)
-                _machineProducts[orderedProductAmount.Key] -= orderedProductAmount.Value;
+                _machineProducts.Clear();
+                foreach (var copyItem in machineProductsCopy)
+                    _machineProducts.Add(copyItem.Key, copyItem.Value);
 
-            //release rest
-            foreach (var bill in restOperation.Rest)
-                _machineBills[bill.Key] -= bill.Value;
-
-            return restOperation;
+                return new SellOperation
+                {
+                    Success = false,
+                    ErrorMessage = "Processing error appeared"
+                };
+            }
         }
 
     }
