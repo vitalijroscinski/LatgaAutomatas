@@ -3,13 +3,13 @@ using LatgaAutomatasLibrary.Services.Interfaces;
 
 namespace LatgaAutomatasLibrary.Services
 {
-    public class VendingMachine : IVendingMachine
+    public class VendingMachineService : IVendingMachine
     {
         private readonly IPaymentService _paymentService;
         private readonly Dictionary<Bill, int> _machineBills = new();
         private readonly Dictionary<Product, int> _machineProducts = new();
 
-        public VendingMachine(IPaymentService paymentService)
+        public VendingMachineService(IPaymentService paymentService)
         {
             _paymentService = paymentService;
         }
@@ -38,6 +38,7 @@ namespace LatgaAutomatasLibrary.Services
             var productsSummaryPrice = orderedProductAmounts.Sum(x => x.Key.Price * x.Value);
             var paymentCash = payment.Sum(x => x.Key.Nominal * x.Value);
 
+            //verify
             if (paymentCash < productsSummaryPrice)
             {
                 return new SellOperation
@@ -67,6 +68,7 @@ namespace LatgaAutomatasLibrary.Services
                 };
             }
 
+            //start payment process
             decimal rest = paymentCash - productsSummaryPrice;
             //increase machine cash amount because of payment
             foreach (var bill in payment)
@@ -80,24 +82,22 @@ namespace LatgaAutomatasLibrary.Services
 
             if (!restOperation.Success)
             {
-                //take back customer bills
+                //return customer bills
                 foreach (var bill in payment)
                     _machineBills[bill.Key] -= bill.Value;
 
                 return restOperation;
             }
 
-
-            //reduce machine product amounts
+            //release machine products
             foreach (var orderedProductAmount in orderedProductAmounts)
                 _machineProducts[orderedProductAmount.Key] -= orderedProductAmount.Value;
 
-            //reduce machine cash amount because of rest
+            //release rest
             foreach (var bill in restOperation.Rest)
                 _machineBills[bill.Key] -= bill.Value;
 
             return restOperation;
-
         }
 
     }

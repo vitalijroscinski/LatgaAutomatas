@@ -9,7 +9,7 @@ namespace TestLatgaAutomatas.Services
         private Bill _20ct;
         private Bill _50ct;
         private Product _10ct_product;
-        private VendingMachine _vendingMachine;
+        private VendingMachineService _vendingMachine;
 
 
         public void PopulateDefaultData()
@@ -19,7 +19,7 @@ namespace TestLatgaAutomatas.Services
             _50ct = new() { Name = "50ct", Nominal = 0.5m };
             _10ct_product = new() { Name = "Product1", Price = 0.1m };
 
-            _vendingMachine = new VendingMachine(new PaymentService());
+            _vendingMachine = new VendingMachineService(new PaymentService());
 
             _vendingMachine.AddBill(_10ct, 10);
             _vendingMachine.AddBill(_20ct, 10);
@@ -93,7 +93,7 @@ namespace TestLatgaAutomatas.Services
             _10ct = new() { Name = "10ct", Nominal = 0.1m };
             _10ct_product = new() { Name = "Product1", Price = 0.1m };
 
-            _vendingMachine = new VendingMachine(new PaymentService());
+            _vendingMachine = new VendingMachineService(new PaymentService());
             _vendingMachine.AddProduct(_10ct_product, 1);
 
             Dictionary<Product, int> bag = new() { { _10ct_product, 1 } };

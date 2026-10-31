@@ -11,11 +11,11 @@ namespace LatgaAutomatasConsole.Scenarios
     {
         private readonly IVendingMachine _vendingMachine;
         private readonly IBillService _billService;
-        private readonly ILogger<TryToBuyToMuchProducts> _logger;
+        private readonly ILogger<CustomScenario> _logger;
 
         public CustomScenario(IVendingMachine vendingMachine,
             IBillService billService,
-            ILogger<TryToBuyToMuchProducts> logger)
+            ILogger<CustomScenario> logger)
         {
             _vendingMachine = vendingMachine;
             _billService = billService;

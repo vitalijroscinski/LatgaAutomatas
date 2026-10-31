@@ -18,7 +18,7 @@ namespace LatgaAutomatasConsole
             builder.Logging.AddConsole();
 
             // Register services
-            builder.Services.AddSingleton<IVendingMachine, VendingMachine>();
+            builder.Services.AddSingleton<IVendingMachine, VendingMachineService>();
             builder.Services.AddSingleton<IPaymentService, PaymentService>();
             builder.Services.AddSingleton<IBillService, BillService>();
 
