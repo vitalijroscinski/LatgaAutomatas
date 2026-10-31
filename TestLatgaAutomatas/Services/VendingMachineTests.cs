@@ -5,22 +5,15 @@ namespace TestLatgaAutomatas.Services
 {
     public class VendingMachineTests
     {
-        private Bill _10ct;
-        private Bill _20ct;
-        private Bill _50ct;
-        private Product _10ct_product;
-        private VendingMachineService _vendingMachine;
+        private Bill _10ct = new() { Nominal = 0.1m };
+        private Bill _20ct = new() { Nominal = 0.2m };
+        private Bill _50ct = new() { Nominal = 0.5m };
+        private Product _10ct_product = new() { Name = "Product1", Price = 0.1m };
+        private VendingMachineService _vendingMachine = new VendingMachineService(new PaymentService());
 
 
-        public void PopulateDefaultData()
+        private void PopulateDefaultData()
         {
-            _10ct = new() { Nominal = 0.1m };
-            _20ct = new() { Nominal = 0.2m };
-            _50ct = new() { Nominal = 0.5m };
-            _10ct_product = new() { Name = "Product1", Price = 0.1m };
-
-            _vendingMachine = new VendingMachineService(new PaymentService());
-
             _vendingMachine.AddBill(_10ct, 10);
             _vendingMachine.AddBill(_20ct, 10);
             _vendingMachine.AddBill(_50ct, 10);
@@ -90,10 +83,6 @@ namespace TestLatgaAutomatas.Services
         [Fact]
         public void Sell_WhenCustomerHasEnoughMoneyToBuyPeoductButMachineIsWithoutMoney_ShouldSellAndReturnRest()
         {
-            _10ct = new() { Nominal = 0.1m };
-            _10ct_product = new() { Name = "Product1", Price = 0.1m };
-
-            _vendingMachine = new VendingMachineService(new PaymentService());
             _vendingMachine.AddProduct(_10ct_product, 1);
 
             Dictionary<Product, int> bag = new() { { _10ct_product, 1 } };
@@ -115,8 +104,24 @@ namespace TestLatgaAutomatas.Services
 
 
             var products = vendingMachine.GetProducts();
-            Assert.Equal(products.Count, 1);
-            Assert.Equal(products[product], 2);
+            Assert.Single(products);
+            Assert.Equal(2, products[product]);
+        }
+
+        [Fact]
+        public void Sell_AddTheSamBill_AmountShouldGrows()
+        {
+            Bill bill1 = new() { Nominal = 0.1m };
+            Bill bill2 = new() { Nominal = 0.1m };
+
+            VendingMachineService vendingMachine = new VendingMachineService(new PaymentService());
+            vendingMachine.AddBill(bill1, 1);
+            vendingMachine.AddBill(bill2, 1);
+
+
+            var bills = vendingMachine.GetBills();
+            Assert.Single(bills);
+            Assert.Equal(2, bills[bill1]);
         }
 
         private bool BillsEquals(Dictionary<Bill, int> bills1, Dictionary<Bill, int> bills2)
