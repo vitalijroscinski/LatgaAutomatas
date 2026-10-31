@@ -19,9 +19,9 @@ namespace TestLatgaAutomatas.Services
         {
             var paymentService = new PaymentService();
 
-            var bill_10ct = new Bill { Name = "10ct", Nominal = 0.1m };
-            var bill_20ct = new Bill { Name = "20ct", Nominal = 0.2m };
-            var bill_50ct = new Bill { Name = "50ct", Nominal = 0.5m };
+            var bill_10ct = new Bill {Nominal = 0.1m };
+            var bill_20ct = new Bill {Nominal = 0.2m };
+            var bill_50ct = new Bill {Nominal = 0.5m };
 
             var deposit = new Dictionary<Bill, int>
             {
@@ -44,8 +44,8 @@ namespace TestLatgaAutomatas.Services
         {
             var paymentService = new PaymentService();
 
-            var bill_10ct = new Bill { Name = "10ct", Nominal = 0.1m };
-            var bill_20ct = new Bill { Name = "20ct", Nominal = 0.2m };
+            var bill_10ct = new Bill { Nominal = 0.1m };
+            var bill_20ct = new Bill { Nominal = 0.2m };
 
             var deposit = new Dictionary<Bill, int>
             {

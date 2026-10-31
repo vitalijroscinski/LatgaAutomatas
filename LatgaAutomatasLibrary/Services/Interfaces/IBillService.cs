@@ -7,7 +7,7 @@ namespace LatgaAutomatasLibrary.Services.Interfaces
 {
     public interface IBillService
     {
-        void DefineBill(string name, decimal denomination);
+        void DefineBill(decimal denomination);
 
         Bill ExchangeToBill(decimal denomination);
 

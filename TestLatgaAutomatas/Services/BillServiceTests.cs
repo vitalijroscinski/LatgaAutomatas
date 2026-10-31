@@ -9,13 +9,12 @@ namespace TestLatgaAutomatas.Services
         {
             var billService = new BillService();
 
-            billService.DefineBill("10ct", 0.1m);
-            billService.DefineBill("20ct", 0.2m);
+            billService.DefineBill(0.1m);
+            billService.DefineBill(0.2m);
 
             var result = billService.ExchangeToBill(0.2m);
 
             Assert.NotNull(result);
-            Assert.Equal("20ct", result.Name);
             Assert.Equal(0.2m, result.Nominal);
         }
 
@@ -24,8 +23,8 @@ namespace TestLatgaAutomatas.Services
         {
             var billService = new BillService();
 
-            billService.DefineBill("10ct", 0.1m);
-            billService.DefineBill("20ct", 0.2m);
+            billService.DefineBill(0.1m);
+            billService.DefineBill(0.2m);
 
             var exception = Assert.Throws<Exception>(() => billService.ExchangeToBill(0.5m));
 
@@ -37,9 +36,9 @@ namespace TestLatgaAutomatas.Services
         {
             var billService = new BillService();
 
-            billService.DefineBill("10ct", 0.1m);
+            billService.DefineBill(0.1m);
 
-            var exception = Assert.Throws<Exception>(() => billService.DefineBill("another 10ct", 0.1m));
+            var exception = Assert.Throws<Exception>(() => billService.DefineBill(0.1m));
 
             Assert.Equal("Bill already is defined", exception.Message);
         }
@@ -49,7 +48,7 @@ namespace TestLatgaAutomatas.Services
         {
             var billService = new BillService();
 
-            var exception = Assert.Throws<Exception>(() => billService.DefineBill("zero bill", 0m));
+            var exception = Assert.Throws<Exception>(() => billService.DefineBill(0m));
 
             Assert.Equal("Only positive nominals are accepted", exception.Message);
         }

@@ -2,10 +2,10 @@
 
 namespace LatgaAutomatasLibrary.Models
 {
-    public class SellOperation
+    public record SellOperation
     {
-        public bool Success { get; set; } = false;
-        public Dictionary<Bill, int> Rest { get; set; } = new();
-        public string ErrorMessage { get; set; } = string.Empty;
+        public bool Success { get; init; } = false;
+        public Dictionary<Bill, int> Rest { get; init; } = new();
+        public string ErrorMessage { get; init; } = string.Empty;
     }
 }

@@ -5,24 +5,9 @@ using System.Text;
 
 namespace LatgaAutomatasLibrary.Models
 {
-    public class Product : IEqualityComparer<Product>
+    public record Product
     {
-        public required string Name { get; set; }
-        public required decimal Price { get; set; }
-
-        public bool Equals(Product? x, Product? y)
-        {
-            if (x == null || y == null)
-                return false;
-
-            return x.Name == y.Name;
-        }
-
-        public int GetHashCode(Product obj)
-        {
-            return Name.GetHashCode();
-        }
-
-        public override string ToString() => $"{Name} {Price}";
+        public required string Name { get; init; }
+        public required decimal Price { get; init; }
     }
 }

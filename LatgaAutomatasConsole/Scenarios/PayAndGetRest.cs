@@ -26,9 +26,9 @@ namespace LatgaAutomatasConsole.Scenarios
         public void Run()
         {
             //define bills
-            _billService.DefineBill("10ct", 0.1m);
-            _billService.DefineBill("20ct", 0.2m);
-            _billService.DefineBill("50ct", 0.5m);
+            _billService.DefineBill(0.1m);
+            _billService.DefineBill(0.2m);
+            _billService.DefineBill(0.5m);
 
             //define products
             Product product1 = new() { Name = "Product1", Price = 0.1m };
@@ -58,7 +58,7 @@ namespace LatgaAutomatasConsole.Scenarios
             customerCash.Add(_billService.ExchangeToBill(0.5m), 1);
 
             _logger.LogInformation("Customer cash:");
-            customerCash.ToList().ForEach(b => Console.WriteLine($"Name {b.Key.Name}, nominal {b.Key.Nominal}, amount {b.Value}"));
+            customerCash.ToList().ForEach(b => Console.WriteLine($"Nominal {b.Key.Nominal}, amount {b.Value}"));
 
             //try to buy
             var rest = _vendingMachine.Sell(customerBag, customerCash);
@@ -71,7 +71,7 @@ namespace LatgaAutomatasConsole.Scenarios
             }
 
             _logger.LogInformation("Rest:");
-            rest.Rest.ToList().ForEach(r => Console.WriteLine($"Name {r.Key.Name}, nominal {r.Key.Nominal}, amount {r.Value}"));
+            rest.Rest.ToList().ForEach(r => Console.WriteLine($"Nominal {r.Key.Nominal}, amount {r.Value}"));
         }
     }
 }

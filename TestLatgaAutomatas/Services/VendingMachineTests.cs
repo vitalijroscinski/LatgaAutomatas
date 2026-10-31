@@ -14,9 +14,9 @@ namespace TestLatgaAutomatas.Services
 
         public void PopulateDefaultData()
         {
-            _10ct = new() { Name = "10ct", Nominal = 0.1m };
-            _20ct = new() { Name = "20ct", Nominal = 0.2m };
-            _50ct = new() { Name = "50ct", Nominal = 0.5m };
+            _10ct = new() { Nominal = 0.1m };
+            _20ct = new() { Nominal = 0.2m };
+            _50ct = new() { Nominal = 0.5m };
             _10ct_product = new() { Name = "Product1", Price = 0.1m };
 
             _vendingMachine = new VendingMachineService(new PaymentService());
@@ -90,7 +90,7 @@ namespace TestLatgaAutomatas.Services
         [Fact]
         public void Sell_WhenCustomerHasEnoughMoneyToBuyPeoductButMachineIsWithoutMoney_ShouldSellAndReturnRest()
         {
-            _10ct = new() { Name = "10ct", Nominal = 0.1m };
+            _10ct = new() { Nominal = 0.1m };
             _10ct_product = new() { Name = "Product1", Price = 0.1m };
 
             _vendingMachine = new VendingMachineService(new PaymentService());
@@ -102,6 +102,21 @@ namespace TestLatgaAutomatas.Services
             var rest = _vendingMachine.Sell(bag, cash);
             Assert.True(rest.Success);
             Assert.True(BillsEquals(rest.Rest, new() { { _10ct, 1 } }));
+        }
+
+        [Fact]
+        public void Sell_AddTheSamProduct_AmountShouldGrows()
+        {
+            Product product = new() { Name = "Product", Price = 0.1m };
+
+            VendingMachineService vendingMachine = new VendingMachineService(new PaymentService());
+            vendingMachine.AddProduct(product, 1);
+            vendingMachine.AddProduct(product, 1);
+
+
+            var products = vendingMachine.GetProducts();
+            Assert.Equal(products.Count, 1);
+            Assert.Equal(products[product], 2);
         }
 
         private bool BillsEquals(Dictionary<Bill, int> bills1, Dictionary<Bill, int> bills2)

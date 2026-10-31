@@ -30,6 +30,9 @@ namespace LatgaAutomatasLibrary.Services
         public bool AddBill(Bill bill, int amount) => AddItem(_machineBills, bill, amount);
         public bool AddProduct(Product product, int amount) => AddItem(_machineProducts, product, amount);
 
+        public Dictionary<Bill, int> GetBills() => _machineBills;
+        public Dictionary<Product, int> GetProducts() => _machineProducts;
+
         public void ClearBill() => _machineBills.Clear();
         public void ClearProducts() => _machineProducts.Clear();
 
